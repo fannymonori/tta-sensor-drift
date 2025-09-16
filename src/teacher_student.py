@@ -187,7 +187,6 @@ def run_pseudolabeling_TA(train_time_model, data, model_online_student, model_on
                 cce_target = tf.reduce_mean(crossEntropyLoss(logits_teacher, logits_student), axis=0)
 
                 loss_value = cce_target + et_loss
-                #loss_value = cce_target
 
             grads = tape.gradient(loss_value, model_online_student.trainable_weights)
             optimizer.apply_gradients(zip(grads, model_online_student.trainable_weights))
@@ -195,7 +194,6 @@ def run_pseudolabeling_TA(train_time_model, data, model_online_student, model_on
             student_weights = model_online_student.trainable_variables
             teacher_weights = model_online_teacher.trainable_variables
 
-            # https://openaccess.thecvf.com/content/CVPR2022/papers/Wang_Continual_Test-Time_Domain_Adaptation_CVPR_2022_paper.pdf
             for l in range(0, len(student_weights)):
                 teacher_weights[l] = alpha * teacher_weights[l] + (1 - alpha) * student_weights[l]
                 model_online_teacher.trainable_variables[l].assign(teacher_weights[l])

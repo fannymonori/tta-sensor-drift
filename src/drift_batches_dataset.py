@@ -8,8 +8,7 @@ from sklearn.utils import shuffle
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import RobustScaler
 
-path_drift_full = "/media/fmonori/Data/Datasets/driftdataset/"
-#path_drift_full = "" #Replace it with path to downloaded sensor drift dataset
+path_drift_full = "" #Replace it with path to downloaded sensor drift dataset
 
 num_of_batches = 10
 num_of_sensors = 16

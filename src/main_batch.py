@@ -3,7 +3,7 @@ import tensorflow as tf
 import os
 from datetime import datetime
 
-from vergara_drift_batches_dataset import get_drift_channels
+from drift_batches_dataset import get_drift_channels
 from models.mlp import define_mlp
 from teacher_student import run_pseudolabeling_TA
 from pseudolabeling import run_pseudolabeling
@@ -113,7 +113,7 @@ def run_train(model, data):
 
     return model
 
-def student_teacher_ps(path):
+def student_teacher_ps():
     dataset = get_drift_channels()
 
     np.random.seed(0)
@@ -142,10 +142,10 @@ def student_teacher_ps(path):
     for layer in model1.layers:
         layer.trainable = False
 
-    acc = run_pseudolabeling_TA(trained_model, dataset, model_online_student, model_online_teacher, path)
+    acc = run_pseudolabeling_TA(trained_model, dataset, model_online_student, model_online_teacher, "./")
 
 
-def pseudolabeling(path):
+def pseudolabeling():
     dataset = get_drift_channels()
 
     model1 = model_func(dataset["shape"], dataset["num_of_classes"])
@@ -167,9 +167,9 @@ def pseudolabeling(path):
     for layer in model1.layers:
         layer.trainable = False
 
-    acc = run_pseudolabeling(trained_model, dataset, model_online_student, path)
+    acc = run_pseudolabeling(trained_model, dataset, model_online_student, "./")
 
-def pseudolabeling_gt(path):
+def pseudolabeling_gt():
     print("Start running pseudolabeling experiments with ground truth labels")
 
     dataset = get_drift_channels()
@@ -195,10 +195,10 @@ def pseudolabeling_gt(path):
     for layer in model1.layers:
         layer.trainable = False
 
-    acc = run_pseudolabeling_with_gt(trained_model, dataset, model_online_student, path)
+    acc = run_pseudolabeling_with_gt(trained_model, dataset, model_online_student, "./")
 
 
-def tent(path):
+def tent():
     dataset = get_drift_channels()
 
     model1 = model_func(dataset["shape"], dataset["num_of_classes"])
@@ -238,8 +238,8 @@ if __name__ == '__main__':
     tf.keras.utils.set_random_seed(0)
 
     # Uncomment the one you would like to run
-    #tent(folder)
-    #student_teacher_ps(folder)
-    pseudolabeling(folder)
+    #tent()
+    #student_teacher_ps()
+    pseudolabeling()
 
-    #pseudolabeling_gt(folder)
+    #pseudolabeling_gt()
